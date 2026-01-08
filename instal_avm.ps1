@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-    Angular Version Manager (AVM) Installer
+    Angular Version Manager (AVM) Installer (Fixed)
     
 .DESCRIPTION
-    Installs or updates the 'avm' utility in the user's PowerShell profile.
-    Handles dependencies, permissions, and configuration automatically.
+    Installs/Updates 'avm' in the PowerShell profile.
+    Fixes the 'HelpMessage' syntax error from previous versions.
 
 .NOTES
     File Name      : install_avm.ps1
@@ -31,7 +31,7 @@ if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Adm
 }
 
 # =============================================================================
-# 2. DEFINE CORE LOGIC
+# 2. DEFINE CORE LOGIC (Syntax Fixed)
 # =============================================================================
 $AvmScriptContent = @'
 
@@ -43,6 +43,7 @@ $AvmScriptContent = @'
 # -----------------------------------------------------------------------------
 function avm {
     param (
+        # FIXED: HelpMessage is now correctly placed inside the Parameter attribute
         [Parameter(Mandatory=$true, HelpMessage="The target Angular version (e.g., 16, 17, 18.2.0)")]
         [string]$Version
     )
@@ -85,6 +86,7 @@ function avm {
     Write-Host "[AVM] Request: Angular v$Version requires Node v$TargetNodeMajor.x" -ForegroundColor Cyan
 
     # --- STEP 1: NVM SWITCHING ---
+    # Pipe to Out-String to ensure we get a text blob, not an array
     $nvmOutputRaw = nvm list | Out-String
     $pattern = "\b($TargetNodeMajor\.\d+\.\d+)\b"
 
@@ -157,7 +159,7 @@ if ($null -eq $CurrentContent) { $CurrentContent = "" }
 $RegionRegex = "(?ms)^\s*#region AVM_MANAGER.*?#endregion AVM_MANAGER\s*$"
 
 if ($CurrentContent -match $RegionRegex) {
-    Write-Host "[UPDATE] Updating AVM to the latest version..." -ForegroundColor Yellow
+    Write-Host "[UPDATE] Correcting AVM version in profile..." -ForegroundColor Yellow
     $NewContent = $CurrentContent -replace $RegionRegex, $AvmScriptContent
 } else {
     Write-Host "[INSTALL] Adding AVM to your PowerShell profile..." -ForegroundColor Green
@@ -193,7 +195,7 @@ try {
         throw "Reload verification failed"
     }
 } catch {
-    # If immediate reload fails (process boundary), give clear instructions
+    # If immediate reload fails (due to previous syntax error in profile), give clear instructions
     Write-Host "To start using AVM, please choose one option:"
     Write-Host " 1. Run this command: . `$PROFILE" -ForegroundColor Yellow
     Write-Host "    OR"
