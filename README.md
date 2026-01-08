@@ -15,7 +15,7 @@ No more:
 
 ## 🚀 Quick Install (One-Line)
 
-Run this command in **PowerShell** to download and install AVM into your profile automatically:
+Run as **administrator** this command in **PowerShell**  to download and install AVM into your profile automatically:
 
 ```powershell
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; iwr -useb https://raw.githubusercontent.com/officialrakeshr/avm-windows/refs/heads/main/instal_avm.ps1 | iex
