@@ -1,10 +1,9 @@
 <#
 .SYNOPSIS
-    Angular Version Manager (AVM) Installer (Fixed)
+    Angular Version Manager (AVM) Installer v1
     
 .DESCRIPTION
     Installs/Updates 'avm' in the PowerShell profile.
-    Fixes the 'HelpMessage' syntax error from previous versions.
 
 .NOTES
     File Name      : install_avm.ps1
@@ -39,11 +38,12 @@ $AvmScriptContent = @'
 # -----------------------------------------------------------------------------
 #  ANGULAR VERSION MANAGER (AVM)
 #  Automates switching between Angular versions by orchestrating NVM and NPM.
+#  Author: Rakesh R (https://github.com/officialrakeshr)
+#  Tool: Google Gemini
 #  Map Source: https://angular.dev/reference/versions
 # -----------------------------------------------------------------------------
 function avm {
     param (
-        # FIXED: HelpMessage is now correctly placed inside the Parameter attribute
         [Parameter(Mandatory=$true, HelpMessage="The target Angular version (e.g., 16, 17, 18.2.0)")]
         [string]$Version
     )
@@ -201,6 +201,7 @@ try {
     Write-Host "    OR"
     Write-Host " 2. Close this window and open a new PowerShell session." -ForegroundColor Blue
 }
-
-Write-Host "`nPress Enter to exit..."
+Write-Host "`nHappy Angular development !!!"
+Write-Host "`nPress Enter to exit AVM installation..."
 Read-Host
+
