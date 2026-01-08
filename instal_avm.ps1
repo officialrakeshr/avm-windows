@@ -43,8 +43,7 @@ $AvmScriptContent = @'
 # -----------------------------------------------------------------------------
 function avm {
     param (
-        [Parameter(Mandatory=$true)]
-        [HelpMessage="The target Angular version (e.g., 16, 17, 18.2.0)"]
+        [Parameter(Mandatory=$true, HelpMessage="The target Angular version (e.g., 16, 17, 18.2.0)")]
         [string]$Version
     )
 
