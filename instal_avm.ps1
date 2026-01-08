@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
-    Installs/Updates AVM into $PROFILE (CurrentUserCurrentHost).
-    Matches the exact path shown when running $PROFILE in the terminal.
+    Installs/Updates AVM into $PROFILE.
+    Auto-elevates, sets permissions, and guides the user on restart.
 #>
 
 # --- 1. AUTO-ELEVATE TO ADMINISTRATOR ---
@@ -124,7 +124,7 @@ function avm {
 
 '@
 
-# --- 3. MANAGE PROFILE (FIXED: Uses standard $PROFILE) ---
+# --- 3. MANAGE PROFILE ---
 $ProfilePath = $PROFILE
 Write-Host "[SETUP] Target Profile: $ProfilePath" -ForegroundColor Cyan
 
@@ -157,11 +157,26 @@ try {
     Write-Host "   [ERROR] Could not set policy." -ForegroundColor Red
 }
 
+# --- 5. FINISH & AUTO-RELOAD ---
 Write-Host "`n============================================" -ForegroundColor Green
 Write-Host " AVM INSTALLED SUCCESSFULLY " -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
-Write-Host "Target File: $ProfilePath"
-Write-Host "To start using it immediately, run: "
-Write-Host "   . `$PROFILE" -ForegroundColor Cyan
+
+try {
+    # Attempt to reload profile immediately in this session
+    . $PROFILE
+    if (Get-Command "avm" -ErrorAction SilentlyContinue) {
+        Write-Host " [SUCCESS] AVM loaded! You can type 'avm 17' now." -ForegroundColor Cyan
+    } else {
+        throw "Not loaded"
+    }
+} catch {
+    # If we are in a sub-process (Admin window), the reload won't affect the user's main window
+    Write-Host "To start using AVM, you have two options:"
+    Write-Host " 1. Run this command: . `$PROFILE" -ForegroundColor Yellow
+    Write-Host "    OR"
+    Write-Host " 2. Close the Powershell session and open a new Powershell session" -ForegroundColor Blue
+}
+
 Write-Host "`nPress Enter to exit..."
 Read-Host
