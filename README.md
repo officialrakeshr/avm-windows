@@ -1,0 +1,1 @@
+# angular-version-manager-windows
