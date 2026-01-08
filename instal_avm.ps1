@@ -178,5 +178,6 @@ try {
     Write-Host " 2. Close the Powershell session and open a new Powershell session" -ForegroundColor Blue
 }
 
-Write-Host "`nPress Enter to exit..."
+Write-Host "`nPress Enter to exit installation..."
 Read-Host
+
